@@ -6,7 +6,7 @@
 
 - [x] Phase 1: 프로젝트 셋업 + Docker ✅
 - [x] Phase 2: DB 모델 + 구독자 API ✅
-- [ ] Phase 3: Sourcer 에이전트 (RSS 수집)
+- [x] Phase 3: Sourcer 에이전트 (RSS 수집) ✅
 - [ ] Phase 4: Curator 에이전트 (LLM 선별)
 - [ ] Phase 5: Translator 에이전트 (LLM 번역)
 - [ ] Phase 6: Editor 에이전트 (리포트 구성)
