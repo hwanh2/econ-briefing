@@ -13,3 +13,9 @@
 - 24시간 필터링, URL 기반 중복 제거, 피드별 에러 핸들링
 - 테스트 12개 통과 (mock 기반, 네트워크 미사용)
 - 이슈: #1, 브랜치: feat/sourcer
+
+## Phase 4: Curator 에이전트 (완료)
+- OpenAI gpt-4o로 기사 선별 (스코어링 + 섹터 분류)
+- JSON response_format 사용, 재시도 로직 포함
+- 테스트 8개 통과 (OpenAI API mock)
+- 이슈: #3, 브랜치: feat/curator
