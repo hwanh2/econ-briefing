@@ -1,0 +1,9 @@
+node_modules/
+__pycache__/
+*.pyc
+.env
+.next/
+postgres_data/
+output/
+*.egg-info/
+.pytest_cache/
