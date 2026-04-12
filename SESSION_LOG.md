@@ -32,3 +32,10 @@
 - 마크다운 → HTML 변환 (markdown 라이브러리)
 - 테스트 10개 통과
 - 이슈: #7, 브랜치: feat/editor
+
+## Phase 7: Publisher 에이전트 (완료)
+- Resend SDK로 이메일 발송, API 키 없으면 skip
+- 구독자별 발송 + delivery_logs DB 기록
+- 에러 시 해당 구독자만 실패 처리, 나머지 계속
+- 테스트 5개 통과
+- 이슈: #9, 브랜치: feat/publisher

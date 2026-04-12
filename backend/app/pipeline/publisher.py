@@ -1,5 +1,65 @@
+import asyncio
+from datetime import date
+
+import resend
+
+from app.config import settings
+
+
 class Publisher:
-    # TODO: implement email delivery via Resend (Phase 7)
-    # send(report_html, subscribers) -> delivery result dict
-    # Skips gracefully if RESEND_API_KEY is not set
-    pass
+    async def send(
+        self,
+        report_html: str,
+        report_id: int = None,
+        subscribers: list[dict] = None,
+        db=None,
+    ) -> dict:
+        subscribers = subscribers or []
+
+        if not settings.resend_api_key:
+            return {
+                "sent": 0,
+                "failed": 0,
+                "skipped": len(subscribers),
+                "reason": "no_api_key",
+            }
+
+        resend.api_key = settings.resend_api_key
+        subject = f"📊 경제 브리핑 — {date.today().strftime('%Y.%m.%d')}"
+        sent = 0
+        failed = 0
+
+        for sub in subscribers:
+            try:
+                await asyncio.to_thread(
+                    resend.Emails.send,
+                    {
+                        "from": "Econ Briefing <briefing@resend.dev>",
+                        "to": [sub["email"]],
+                        "subject": subject,
+                        "html": report_html,
+                    },
+                )
+                sent += 1
+                self._log_delivery(db, sub, report_id, "sent")
+            except Exception:
+                failed += 1
+                self._log_delivery(db, sub, report_id, "failed")
+
+        return {"sent": sent, "failed": failed, "skipped": 0}
+
+    def _log_delivery(self, db, subscriber, report_id, status):
+        if db is None or report_id is None:
+            return
+        try:
+            from app.models import DeliveryLog
+
+            log = DeliveryLog(
+                subscriber_id=subscriber.get("id"),
+                report_id=report_id,
+                status=status,
+            )
+            db.add(log)
+            db.commit()
+        except Exception:
+            db.rollback()

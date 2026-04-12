@@ -10,7 +10,7 @@
 - [x] Phase 4: Curator 에이전트 (LLM 선별) ✅
 - [x] Phase 5: Translator 에이전트 (LLM 번역) ✅
 - [x] Phase 6: Editor 에이전트 (리포트 구성) ✅
-- [ ] Phase 7: Publisher 에이전트 (이메일 발송)
+- [x] Phase 7: Publisher 에이전트 (이메일 발송) ✅
 - [ ] Phase 8: 파이프라인 오케스트레이터
 - [ ] Phase 9: Backend API 완성
 - [ ] Phase 10: Frontend
