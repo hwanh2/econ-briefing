@@ -7,3 +7,9 @@
 - SQLAlchemy 모델 4개: subscribers, reports, report_articles, delivery_logs
 - 구독자 CRUD API 동작 확인
 - GitHub repo: https://github.com/hwanh2/econ-briefing
+
+## Phase 3: Sourcer 에이전트 (완료)
+- feedparser + httpx로 5개 RSS 피드 비동기 수집
+- 24시간 필터링, URL 기반 중복 제거, 피드별 에러 핸들링
+- 테스트 12개 통과 (mock 기반, 네트워크 미사용)
+- 이슈: #1, 브랜치: feat/sourcer
