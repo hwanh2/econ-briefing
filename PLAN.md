@@ -1,37 +1,24 @@
-# Econ Briefing — 구현 계획서
+# Econ Briefing — 구현 체크리스트
 
-## 개요
+> 프로젝트 규칙/스택/워크플로우는 CLAUDE.md 참조
 
-경제 뉴스 자동 큐레이션 + 번역 + 리포트 생성 파이프라인.
-멀티 에이전트 구조, Docker 기반 로컬 실행, 웹 UI + 이메일 발송.
+## 진행 상태
 
-## 기술 스택
-
-| 컴포넌트 | 기술 |
-|----------|------|
-| Pipeline | Python 3.12, OpenAI API |
-| Backend | FastAPI, SQLAlchemy, PostgreSQL |
-| Frontend | Next.js 15, Tailwind CSS |
-| Infra | Docker Compose |
-| Email | Resend |
-| Scheduler | APScheduler (backend 내장) |
-
-## 아키텍처
-
-```
-Frontend (Next.js :3000)
-    ↕ REST API
-Backend (FastAPI :8000)
-    ↕
-PostgreSQL (:5432)
-    ↕
-Pipeline (5 Agents)
-  Sourcer → Curator → Translator → Editor → Publisher
-```
+- [x] Phase 1: 프로젝트 셋업 + Docker ✅
+- [x] Phase 2: DB 모델 + 구독자 API ✅
+- [ ] Phase 3: Sourcer 에이전트 (RSS 수집)
+- [ ] Phase 4: Curator 에이전트 (LLM 선별)
+- [ ] Phase 5: Translator 에이전트 (LLM 번역)
+- [ ] Phase 6: Editor 에이전트 (리포트 구성)
+- [ ] Phase 7: Publisher 에이전트 (이메일 발송)
+- [ ] Phase 8: 파이프라인 오케스트레이터
+- [ ] Phase 9: Backend API 완성
+- [ ] Phase 10: Frontend
+- [ ] Phase 11: 통합 테스트 + 스케줄러
 
 ---
 
-## Phase 1: 프로젝트 셋업 + Docker 기반
+## ~~Phase 1: 프로젝트 셋업 + Docker 기반~~ ✅
 
 ### 작업
 - [ ] 디렉토리 구조 생성
@@ -539,23 +526,8 @@ Phase 10 → Frontend 완성
 Phase 11 → 통합 테스트 + 스케줄러 ON → 자고 일어나면 리포트 확인
 ```
 
-## Claude Code 구현 전략
+## 체크포인트 규칙
 
-### 서브에이전트 활용
-| Phase | 에이전트/스킬 | 모델 |
-|-------|-------------|------|
-| Phase 1-2 | Sonnet 서브에이전트 | 인프라 + DB |
-| Phase 3-7 | Sonnet 서브에이전트 (병렬 가능) | 파이프라인 각 에이전트 |
-| Phase 8 | Sonnet 서브에이전트 | 오케스트레이터 |
-| Phase 9 | Sonnet 서브에이전트 | Backend API |
-| Phase 10 | Sonnet 서브에이전트 | Frontend |
-| Phase 11 | 메인 (Opus) | 통합 테스트 + 검증 |
-
-### 병렬화 가능 구간
-- Phase 3~7: 에이전트들은 인터페이스만 맞으면 **병렬 구현** 가능
-- Phase 9 + 10: Backend와 Frontend **동시 구현** 가능
-
-### 체크포인트 규칙
 1. 각 Phase 완료 후 **검증 명령어 실행**
 2. 통과 기준 **전부 체크**되어야 다음 Phase
 3. 실패 시 **해당 Phase만 수정** 후 재검증
