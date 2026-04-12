@@ -19,3 +19,10 @@
 - JSON response_format 사용, 재시도 로직 포함
 - 테스트 8개 통과 (OpenAI API mock)
 - 이슈: #3, 브랜치: feat/curator
+
+## Phase 5: Translator 에이전트 (완료)
+- gpt-4o-mini로 영문→한국어 번역, 경제 용어 glossary 시스템 프롬프트
+- 한국어 소스(hankyung, mk) 자동 passthrough
+- asyncio.gather 병렬 번역, 에러 시 원문 반환
+- 테스트 8개 통과 (OpenAI mock)
+- 이슈: #5, 브랜치: feat/translator

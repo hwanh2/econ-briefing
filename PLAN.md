@@ -8,7 +8,7 @@
 - [x] Phase 2: DB 모델 + 구독자 API ✅
 - [x] Phase 3: Sourcer 에이전트 (RSS 수집) ✅
 - [x] Phase 4: Curator 에이전트 (LLM 선별) ✅
-- [ ] Phase 5: Translator 에이전트 (LLM 번역)
+- [x] Phase 5: Translator 에이전트 (LLM 번역) ✅
 - [ ] Phase 6: Editor 에이전트 (리포트 구성)
 - [ ] Phase 7: Publisher 에이전트 (이메일 발송)
 - [ ] Phase 8: 파이프라인 오케스트레이터
