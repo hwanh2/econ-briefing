@@ -26,3 +26,9 @@
 - asyncio.gather 병렬 번역, 에러 시 원문 반환
 - 테스트 8개 통과 (OpenAI mock)
 - 이슈: #5, 브랜치: feat/translator
+
+## Phase 6: Editor 에이전트 (완료)
+- gpt-4o로 리포트 구성: 오늘의 핵심 + 기사별 영향도/요약
+- 마크다운 → HTML 변환 (markdown 라이브러리)
+- 테스트 10개 통과
+- 이슈: #7, 브랜치: feat/editor
