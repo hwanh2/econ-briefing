@@ -55,3 +55,11 @@
 - 기존 reports/subscribers API와 통합
 - 테스트 8개 통과
 - 이슈: #13, 브랜치: feat/backend-api
+
+## Phase 10: Frontend (완료)
+- 구독 폼 (use client): 이메일/이름/섹터 8개, POST /api/subscribers
+- 리포트 목록/상세 페이지 (서버 컴포넌트), HTML 렌더링
+- 구독 해지 페이지
+- next.config rewrites로 API 프록시
+- layout에 네비게이션 추가
+- 이슈: #15, 브랜치: feat/frontend
