@@ -63,3 +63,10 @@
 - next.config rewrites로 API 프록시
 - layout에 네비게이션 추가
 - 이슈: #15, 브랜치: feat/frontend
+
+## Phase 11: 통합 테스트 + 스케줄러 (완료)
+- E2E 테스트: 구독 등록 → 파이프라인 → 리포트 생성 → API 확인
+- 에러 핸들링 테스트 13개: RSS 실패, LLM 타임아웃, Publisher 스킵 등
+- 전체 테스트 74개 통과
+- 스케줄러는 Phase 9에서 이미 구현됨 (APScheduler 매일 06:00)
+- 이슈: #17, 브랜치: feat/integration-tests
