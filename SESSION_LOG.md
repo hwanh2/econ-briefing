@@ -47,3 +47,11 @@
 - 단계별 에러 핸들링 (실패해도 후속 단계 계속)
 - 테스트 8개 통과
 - 이슈: #11, 브랜치: feat/orchestrator
+
+## Phase 9: Backend API 완성 (완료)
+- POST /api/pipeline/run (BackgroundTasks로 비동기 실행, 중복 실행 방지)
+- GET /api/pipeline/status (idle/running 상태, last_run, next_run)
+- APScheduler AsyncIOScheduler 매일 06:00 cron job
+- 기존 reports/subscribers API와 통합
+- 테스트 8개 통과
+- 이슈: #13, 브랜치: feat/backend-api
