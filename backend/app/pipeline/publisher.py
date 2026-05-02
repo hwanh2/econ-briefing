@@ -10,6 +10,7 @@ class Publisher:
     async def send(
         self,
         report_html: str,
+        report_text: str = None,
         report_id: int = None,
         subscribers: list[dict] = None,
         db=None,
@@ -30,19 +31,22 @@ class Publisher:
         failed = 0
 
         for sub in subscribers:
+            params = {
+                "from": "Econ Briefing <briefing@resend.dev>",
+                "to": [sub["email"]],
+                "subject": subject,
+                "html": report_html,
+            }
+            if report_text:
+                params["text"] = report_text
+
             try:
-                await asyncio.to_thread(
-                    resend.Emails.send,
-                    {
-                        "from": "Econ Briefing <briefing@resend.dev>",
-                        "to": [sub["email"]],
-                        "subject": subject,
-                        "html": report_html,
-                    },
-                )
+                await asyncio.to_thread(resend.Emails.send, params)
                 sent += 1
                 self._log_delivery(db, sub, report_id, "sent")
-            except Exception:
+            except Exception as exc:
+                import logging
+                logging.getLogger(__name__).warning("Email send failed for %s: %s", sub["email"], exc)
                 failed += 1
                 self._log_delivery(db, sub, report_id, "failed")
 

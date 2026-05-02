@@ -27,20 +27,26 @@ async def send_report(report_id: int, db: Session = Depends(get_db)):
     if not report:
         raise HTTPException(status_code=404, detail="Report not found")
 
+    if not report.content_html and not report.content_md:
+        raise HTTPException(status_code=400, detail="Report has no content")
+
     subscribers = db.query(Subscriber).filter(Subscriber.active == True).all()
     subscriber_dicts = [
         {"id": s.id, "email": s.email, "name": s.name}
         for s in subscribers
     ]
 
-    if not report.content_html:
-        report_html = f"<pre style='font-family:sans-serif;white-space:pre-wrap'>{report.content_md or ''}</pre>"
-    else:
+    if report.content_html:
         report_html = report.content_html
+        report_text = report.content_md or ""
+    else:
+        report_text = report.content_md
+        report_html = f"<pre style='font-family:sans-serif;white-space:pre-wrap'>{report_text}</pre>"
 
     from app.pipeline.publisher import Publisher
     result = await Publisher().send(
         report_html=report_html,
+        report_text=report_text,
         report_id=report.id,
         subscribers=subscriber_dicts,
         db=db,
