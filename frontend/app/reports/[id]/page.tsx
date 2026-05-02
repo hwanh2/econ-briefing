@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import SendEmailButton from "../../components/SendEmailButton";
 
 interface Article {
   title: string;
@@ -50,8 +51,13 @@ export default async function ReportDetailPage({
         ← 리포트 목록
       </Link>
 
-      <h2 className="text-2xl font-bold mb-1">{report.title}</h2>
-      <p className="text-sm text-gray-500 mb-8">{report.date}</p>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+        <div>
+          <h2 className="text-2xl font-bold mb-1">{report.title}</h2>
+          <p className="text-sm text-gray-500">{report.date}</p>
+        </div>
+        <SendEmailButton reportId={report.id} />
+      </div>
 
       {report.content_html ? (
         <div
