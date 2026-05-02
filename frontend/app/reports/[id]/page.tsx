@@ -56,7 +56,7 @@ export default async function ReportDetailPage({
           <h2 className="text-2xl font-bold mb-1">{report.title}</h2>
           <p className="text-sm text-gray-500">{report.date}</p>
         </div>
-        <SendEmailButton reportId={report.id} />
+        <SendEmailButton />
       </div>
 
       {report.content_html ? (

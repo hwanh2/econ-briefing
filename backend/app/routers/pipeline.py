@@ -8,12 +8,14 @@ router = APIRouter()
 _is_running = False
 _last_run: Optional[datetime] = None
 
+SECTORS = ["macro", "finance", "tech", "ai", "energy", "realestate", "politics", "startup"]
+
 
 async def _run_pipeline():
     global _is_running, _last_run
     from app.pipeline.orchestrator import Orchestrator
     try:
-        await Orchestrator().run(sectors=["macro", "finance", "tech", "ai", "energy", "realestate", "politics", "startup"])
+        return await Orchestrator().run(sectors=SECTORS)
     finally:
         _last_run = datetime.utcnow()
         _is_running = False
@@ -27,6 +29,20 @@ async def run_pipeline(background_tasks: BackgroundTasks):
     _is_running = True
     background_tasks.add_task(_run_pipeline)
     return {"status": "started", "message": "Pipeline execution started"}
+
+
+@router.post("/pipeline/run-sync")
+async def run_pipeline_sync():
+    global _is_running
+    if _is_running:
+        raise HTTPException(status_code=409, detail="already_running")
+    _is_running = True
+    try:
+        result = await _run_pipeline()
+        return result
+    except Exception as exc:
+        _is_running = False
+        raise HTTPException(status_code=500, detail=str(exc))
 
 
 @router.get("/pipeline/status")

@@ -96,12 +96,18 @@ class Orchestrator:
         try:
             t0 = time.perf_counter()
             subscribers = self._get_active_subscribers()
-            publish_result = await Publisher().send(
-                report_html=report.get("content_html", ""),
-                report_id=report_id,
-                subscribers=subscribers,
-                db=None,
-            )
+            from app.database import SessionLocal
+            db = SessionLocal()
+            try:
+                publish_result = await Publisher().send(
+                    report_html=report.get("content_html", ""),
+                    report_text=report.get("content_md", ""),
+                    report_id=report_id,
+                    subscribers=subscribers,
+                    db=db,
+                )
+            finally:
+                db.close()
             timings["publisher"] = round(time.perf_counter() - t0, 3)
             result["publish"] = publish_result
             logger.info("Step 6 done: publish result %s", publish_result)
@@ -127,18 +133,37 @@ class Orchestrator:
     def _save_to_db(self, report: dict) -> int:
         from app.database import SessionLocal
         from app.models import Report, ReportArticle
+        from sqlalchemy import update
 
         db = SessionLocal()
         try:
-            db_report = Report(
-                date=date.today(),
-                title=report.get("title"),
-                content_md=report.get("content_md"),
-                content_html=report.get("content_html"),
-            )
-            db.add(db_report)
-            db.commit()
-            db.refresh(db_report)
+            today = date.today()
+            existing = db.query(Report).filter(Report.date == today).first()
+            if existing:
+                db.execute(
+                    update(Report)
+                    .where(Report.id == existing.id)
+                    .values(
+                        title=report.get("title"),
+                        content_md=report.get("content_md"),
+                        content_html=report.get("content_html"),
+                    )
+                )
+                db.commit()
+                db.refresh(existing)
+                db.query(ReportArticle).filter(ReportArticle.report_id == existing.id).delete()
+                db.commit()
+                db_report = existing
+            else:
+                db_report = Report(
+                    date=today,
+                    title=report.get("title"),
+                    content_md=report.get("content_md"),
+                    content_html=report.get("content_html"),
+                )
+                db.add(db_report)
+                db.commit()
+                db.refresh(db_report)
 
             for article in report.get("articles", []):
                 ra = ReportArticle(

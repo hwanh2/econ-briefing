@@ -1,8 +1,10 @@
 import json
+import logging
 import openai
 
 from app.config import settings
 
+logger = logging.getLogger(__name__)
 
 SYSTEM_PROMPT_TEMPLATE = """\
 당신은 경제 뉴스 에디터입니다.
@@ -38,12 +40,16 @@ class Curator:
             # Retry once
             selections = await self._call_llm(system_prompt, user_message)
         if selections is None:
+            logger.warning("Curator LLM returned None after retry")
             return []
+
+        logger.info("Curator received %d selections from LLM", len(selections))
 
         result = []
         for item in selections:
             idx = item.get("index")
             if idx is None or not (0 <= idx < len(articles)):
+                logger.warning("Curator skipping invalid index: %s", idx)
                 continue
             article = dict(articles[idx])
             article["score"] = item.get("score", 0)
@@ -52,6 +58,7 @@ class Curator:
             result.append(article)
 
         result.sort(key=lambda x: x["score"], reverse=True)
+        logger.info("Curator returning %d curated articles", len(result))
         return result[:8]
 
     async def _call_llm(self, system_prompt: str, user_message: str) -> list[dict] | None:

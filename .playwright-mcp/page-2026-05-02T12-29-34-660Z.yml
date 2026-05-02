@@ -1,0 +1,29 @@
+- generic [active] [ref=e1]:
+  - banner [ref=e2]:
+    - generic [ref=e3]:
+      - link "경제 브리핑" [ref=e4] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e5]:
+        - link "홈" [ref=e6] [cursor=pointer]:
+          - /url: /
+        - link "리포트" [ref=e7] [cursor=pointer]:
+          - /url: /reports
+        - link "구독 해지" [ref=e8] [cursor=pointer]:
+          - /url: /unsubscribe
+  - main [ref=e9]:
+    - generic [ref=e10]:
+      - link "← 리포트 목록" [ref=e11] [cursor=pointer]:
+        - /url: /reports
+      - generic [ref=e12]:
+        - generic [ref=e13]:
+          - heading "경제 브리핑 — 2026.04.13" [level=2] [ref=e14]
+          - paragraph [ref=e15]: 2026-04-13
+        - button "파이프라인 실행 중..." [disabled] [ref=e30]: 파이프라인 실행 중...
+  - status [ref=e20]:
+    - generic [ref=e21]:
+      - img [ref=e23]
+      - generic [ref=e25]:
+        - text: Static route
+        - button "Hide static indicator" [ref=e26] [cursor=pointer]:
+          - img [ref=e27]
+  - alert [ref=e19]
